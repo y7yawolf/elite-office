@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>ELITE Team</title>
+<style>
+  :root { color-scheme: dark; }
+  body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #11161a; color: #e8e8e8;
+         font-family: "Segoe UI", Tahoma, system-ui, sans-serif; padding: 16px; box-sizing: border-box; text-align: center; }
+  p { font-size: 18px; line-height: 1.6; max-width: 28em; }
+</style>
+</head>
+<body>
+<p id="msg">عم نوصلك على مكتب ELITE…</p>
+<script>
+  // The current temporary address lives in current.txt (updated by the office computer).
+  // The private viewing code stays in this page's #fragment and is passed on, never stored here.
+  (async () => {
+    const valid = (u) => /^https:\/\/[a-z0-9-]+\.trycloudflare\.com$/.test(u);
+    let url = '';
+    try {
+      const r = await fetch('https://api.github.com/repos/y7yawolf/elite-office/contents/current.txt?ref=main',
+        { cache: 'no-store', headers: { Accept: 'application/vnd.github.raw' } });
+      if (r.ok) url = (await r.text()).trim();
+    } catch (e) {}
+    if (!valid(url)) {
+      try {
+        const r = await fetch('current.txt?t=' + Date.now(), { cache: 'no-store' });
+        if (r.ok) url = (await r.text()).trim();
+      } catch (e) {}
+    }
+    if (valid(url)) {
+      location.replace(url + '/' + location.hash);
+    } else {
+      document.getElementById('msg').textContent = 'المكتب مش شغّال هلّق. افتح ELITE Team عالكمبيوتر وجرّب كمان دقيقة.';
+    }
+  })();
+</script>
+</body>
+</html>
