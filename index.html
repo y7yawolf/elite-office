@@ -33,7 +33,11 @@
       } catch (e) {}
     }
     if (valid(url)) {
-      location.replace(url + '/' + location.hash);
+      // ?to=hairline&v=build opens the Hairline office (only these known pages, nothing else).
+      const q = new URLSearchParams(location.search);
+      const v = ['expo', 'build', 'stage'].includes(q.get('v')) ? q.get('v') : 'build';
+      const path = q.get('to') === 'hairline' ? '/hairline/index.html?v=' + v : '/';
+      location.replace(url + path + location.hash);
     } else {
       document.getElementById('msg').textContent = 'المكتب مش شغّال هلّق. افتح ELITE Team عالكمبيوتر وجرّب كمان دقيقة.';
     }
